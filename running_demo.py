@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     # Estimator parameters
     tau = 1e-9
-    M = 20 
+    M = 200 
     SD_B = 10e6
 
     # Estimator definition

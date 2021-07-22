@@ -27,6 +27,19 @@
 |Method|Result|
 |------|------|
 
+## TODOs and Notes
+
+1. Meanfilter test--Precise estimation using only 20 samples is required to
+   solve the problem.
+
+### TODOs
+   - **VISUALIZATION** of an experiment($\Delta B-t$ graph) and relationship of
+   MSE to filter parameters.
+   - Particle Filter
+   - Extended Kalman Filter
+   - Exponential Data Sampling
+   - Implementation of the Strategy in [2]
+
 ## Reference
 
 [1] Shulman, M. D., Harvey, S. P., Nichol, J. M., Bartlett, S. D., Doherty, A.
