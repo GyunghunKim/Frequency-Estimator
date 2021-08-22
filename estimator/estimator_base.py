@@ -1,8 +1,9 @@
-## IMPORTS
+# IMPORTS
 
 from abc import abstractmethod
 
-## CLASSES
+# CLASSES
+
 
 class Estimator():
     def __init__(self, sys):

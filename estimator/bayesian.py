@@ -1,11 +1,12 @@
-## IMPORTS
+# IMPORTS
 
 from .estimator_base import Estimator
 import numpy as np
 import scipy.stats
 from scipy.optimize import minimize
 
-## CLASSES
+# CLASSES
+
 
 class BayesianEstimator(Estimator):
     def __init__(self, sys, M, tau, SD_B, B0):
@@ -35,15 +36,14 @@ class BayesianEstimator(Estimator):
             B_list_precision = 100
 
             B_list = np.linspace(initial_guess * B_list_upper_limit,
-                    initial_guess * B_list_lower_limit, B_list_precision)
+                                 initial_guess * B_list_lower_limit, B_list_precision)
             ans = B_list[np.argmax([func(B) for B in B_list])]
 
         if algorithm == 'scipy':
             ans = minimize(lambda x: -func(x), initial_guess,
-                    method='Powell').x[0]
+                           method='Powell').x[0]
 
         return ans
-            
 
     def update(self):
         def logposterior(B):
@@ -56,12 +56,12 @@ class BayesianEstimator(Estimator):
                 d = data['d']
                 if d == 1:
                     res += np.log(0.5 * (1 - (alpha + beta * np.cos(2 * np.pi *
-                                        B * time))))
+                                                                    B * time))))
                 elif d == 0:
                     res += np.log(0.5 * (1 + (alpha + beta * np.cos(2 * np.pi *
-                                        B * time))))
+                                                                    B * time))))
             res += scipy.stats.norm(self.previous_estimation,
-                    self.SD_B).logpdf(B)
+                                    self.SD_B).logpdf(B)
 
             return res
 
@@ -75,16 +75,16 @@ class BayesianEstimator(Estimator):
                 d = data['d']
                 if d == 1:
                     res *= 0.5 * (1 - (alpha + beta * np.cos(2 * np.pi * B *
-                                    time)))
+                                                             time)))
                 elif d == 0:
                     res *= 0.5 * (1 + (alpha + beta * np.cos(2 * np.pi * B *
-                                    time)))
+                                                             time)))
             res *= scipy.stats.norm(self.previous_estimation, self.SD_B).pdf(B)
 
             return res
 
         self.data_list.append({'meas_time': self.meas_time,
-                'd':self.sys.measure(self.meas_time)})
+                               'd': self.sys.measure(self.meas_time)})
         self.meas_time += self.tau
 
         # A block of data is completely collected.
@@ -92,7 +92,7 @@ class BayesianEstimator(Estimator):
             self.previous_estimation = self.current_estimation
 
             self.current_estimation = BayesianEstimator.findmax(posterior,
-                    self.previous_estimation)
+                                                                self.previous_estimation)
 
             self.meas_time = 0
             self.data_list = []
@@ -100,9 +100,10 @@ class BayesianEstimator(Estimator):
     def estimate(self):
         return self.current_estimation
 
+
 class BayesianSmoothEstimator(BayesianEstimator):
     def __init__(self, sys, M, tau, SD_B, B0):
-        BayesianEstimator.__init__(self, sys, M ,tau, SD_B, B0)
+        BayesianEstimator.__init__(self, sys, M, tau, SD_B, B0)
         self.B0 = B0
         self.tau = tau
 
@@ -117,12 +118,12 @@ class BayesianSmoothEstimator(BayesianEstimator):
                 d = data['d']
                 if d == 1:
                     res += np.log(0.5 * (1 - (alpha + beta * np.cos(2 * np.pi *
-                                        B * time))))
+                                                                    B * time))))
                 elif d == 0:
                     res += np.log(0.5 * (1 + (alpha + beta * np.cos(2 * np.pi *
-                                        B * time))))
+                                                                    B * time))))
             res += scipy.stats.norm(self.previous_estimation,
-                    self.SD_B).logpdf(B)
+                                    self.SD_B).logpdf(B)
 
             return res
 
@@ -136,16 +137,16 @@ class BayesianSmoothEstimator(BayesianEstimator):
                 d = data['d']
                 if d == 1:
                     res *= 0.5 * (1 - (alpha + beta * np.cos(2 * np.pi * B *
-                                    time)))
+                                                             time)))
                 elif d == 0:
                     res *= 0.5 * (1 + (alpha + beta * np.cos(2 * np.pi * B *
-                                    time)))
+                                                             time)))
             res *= scipy.stats.norm(self.previous_estimation, self.SD_B).pdf(B)
 
             return res
 
         self.data_list.append({'meas_time': self.meas_time,
-                'd':self.sys.measure(self.meas_time)})
+                               'd': self.sys.measure(self.meas_time)})
         self.meas_time += self.tau
 
         if len(self.data_list) > self.M:
@@ -153,16 +154,17 @@ class BayesianSmoothEstimator(BayesianEstimator):
 
         self.previous_estimation = self.current_estimation
         self.current_estimation = BayesianEstimator.findmax(posterior,
-                self.previous_estimation)
+                                                            self.previous_estimation)
 
         if len(self.data_list) < self.M:
             self.current_estimation = self.B0
-    
+
         if self.meas_time > self.tau * self.M:
             self.meas_time = 0
 
     def estimate(self):
         return self.current_estimation
+
 
 class BayesianExpSamplingEstimator(BayesianEstimator):
     def __init__(self, sys, M, tau, SD_B, B0, sig):
@@ -182,12 +184,12 @@ class BayesianExpSamplingEstimator(BayesianEstimator):
                 d = data['d']
                 if d == 1:
                     res += np.log(0.5 * (1 - (alpha + beta * np.cos(2 * np.pi *
-                                        B * time))))
+                                                                    B * time))))
                 elif d == 0:
                     res += np.log(0.5 * (1 + (alpha + beta * np.cos(2 * np.pi *
-                                        B * time))))
+                                                                    B * time))))
             res += scipy.stats.norm(self.previous_estimation,
-                    self.SD_B).logpdf(B)
+                                    self.SD_B).logpdf(B)
 
             return res
 
@@ -201,16 +203,16 @@ class BayesianExpSamplingEstimator(BayesianEstimator):
                 d = data['d']
                 if d == 1:
                     res *= 0.5 * (1 - (alpha + beta * np.cos(2 * np.pi * B *
-                                    time)))
+                                                             time)))
                 elif d == 0:
                     res *= 0.5 * (1 + (alpha + beta * np.cos(2 * np.pi * B *
-                                    time)))
+                                                             time)))
             res *= scipy.stats.norm(self.previous_estimation, self.SD_B).pdf(B)
 
             return res
 
         self.data_list.append({'meas_time': self.meas_time,
-                'd':self.sys.measure(self.meas_time)})
+                               'd': self.sys.measure(self.meas_time)})
         self.meas_time *= self.sig
 
         # A block of data is completely collected.
@@ -220,7 +222,7 @@ class BayesianExpSamplingEstimator(BayesianEstimator):
 
         self.previous_estimation = self.current_estimation
         self.current_estimation = BayesianEstimator.findmax(posterior,
-                self.previous_estimation)
-        
+                                                            self.previous_estimation)
+
     def estimate(self):
         return self.current_estimation

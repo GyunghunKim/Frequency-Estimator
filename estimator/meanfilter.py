@@ -1,8 +1,9 @@
-## IMPORTS
+# IMPORTS
 
 from .estimator_base import Estimator
 
-## CLASSES
+# CLASSES
+
 
 class MeanFilter(Estimator):
     def __init__(self, sys, M, B0):
@@ -14,7 +15,7 @@ class MeanFilter(Estimator):
         Estimator.__init__(self, sys)
 
         self.M = M
-        self.data = [B0] * M 
+        self.data = [B0] * M
 
     def update(self):
         self.data.pop(0)
@@ -22,4 +23,3 @@ class MeanFilter(Estimator):
 
     def estimate(self):
         return sum(self.data)/self.M
-    

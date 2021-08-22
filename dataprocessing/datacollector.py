@@ -1,9 +1,10 @@
-## IMPORTS
+# IMPORTS
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-## CLASSES
+# CLASSES
+
 
 class DataCollector():
     def __init__(self):
@@ -22,9 +23,9 @@ class DataCollector():
         :params ref: Reference data (exact one)
         :params *est: Estimations
         """
-        self.data.append({'num_exp':num_exp, 'time':time, 'ref':ref, 'est_list':est})
-        
-    
+        self.data.append({'num_exp': num_exp, 'time': time,
+                         'ref': ref, 'est_list': est})
+
     def mse(self, num_est):
         """
         :params num_est: MSE of which estimator?
@@ -49,7 +50,8 @@ class DataCollector():
         plt.title('$\Delta B_{z}$')
         plt.xlabel('time [s]')
         plt.ylabel('$\Delta B_{z}$ [Hz]')
-        plt.ticklabel_format(axis='y', style='sci', scilimits=(6, 6), useOffset=False, useMathText=True)
+        plt.ticklabel_format(axis='y', style='sci', scilimits=(
+            6, 6), useOffset=False, useMathText=True)
         if ref:
             plt.plot(time, ref, label='True')
         for i in range(len(B_list)):
