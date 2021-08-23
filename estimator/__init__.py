@@ -1,3 +1,3 @@
 from .bayesian import *
-from .meanfilter import MeanFilter
+from .meanfilter import *
 from .baumwelch import *

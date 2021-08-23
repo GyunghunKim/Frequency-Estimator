@@ -24,8 +24,16 @@
 
 ## Notes on Estimators
 
-1. Meanfilter test--Precise estimation using only 20 samples is required to
-   solve the problem.
+1. The BaumWelch estimator is equivalent to finding the argmax $i$ on pdf
+   $P(X_t=i,Y_1,...,Y_t)$, where
+   $$P(X_t=i,Y_s)=\int P(Y_s \vert X_s)P(X_s \vert X_t)dX_s.$$
+   The filter is just a slightly advanced MLE, which is seem to be worse than a
+   MAP Bayesian estimator.
+
+   ![Estimator](./Images/Estimators_result.png)
+
+   $\Delta B_i$'s are for Bayesian, Smooth Bayesian, and Baum Welch estimator,
+   respectively. The Bayesians are MAP estimators.
 
 ### TODO
    - **Visualization** of an experiment($\Delta B$---$t$ graph) and of
@@ -41,7 +49,7 @@
 
 ### TODO
 
-1. Find the envelope of information dependent on n and time t.
+1. Find the envelope of information dependent on $n$ and time $t$.
 1. Construct a strategy to maximize the total information. What will be the
    limit assuming infinite number of samples?
 1. Find the **theoretical** minimum variance of estimation.

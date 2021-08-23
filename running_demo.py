@@ -6,6 +6,7 @@ from dataprocessing import DataCollector
 
 from tqdm import tqdm
 import numpy as np
+import multiprocessing
 
 # MAIN
 
@@ -33,19 +34,21 @@ if __name__ == "__main__":
     estimators = [BayesianEstimator(sys, M, tau, SD_B, B0),
                   BayesianSmoothEstimator(sys, M, tau, SD_B, B0),
                   #BayesianExpSamplingEstimator(sys, M, tau, SD_B, B0, sig),
-                  ContinuousBaumWelchFilter(sys, tau, SD_B_between_steps, B0),
-                  MeanFilter(sys, M, B0)
+                  ContinuousBaumWelchFilter(sys, tau, B0, D, T),
+                  #MeanFilter(sys, M, B0)
                   ]
 
     # Data collector definition
     dc = DataCollector()
 
-    for _ in tqdm(range(300)):
+    # Multiprocessing
+    pool = multiprocessing.Pool()
+
+    for _ in tqdm(range(1000)):
         # Update the system and estimator
         sys.update()
 
-        for estimator in estimators:
-            estimator.update()
+        pool.map(lambda est: est.update(), estimators)
 
         dc.append(0, sys.time, sys.B,
                   *[estimator.estimate() for estimator in estimators])
