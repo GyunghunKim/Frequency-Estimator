@@ -32,8 +32,7 @@
 
    ![Estimator](./Images/Estimators_result.png)
 
-   $\Delta B_i$'s are for Bayesian, Smooth Bayesian, and Baum Welch estimator,
-   respectively. The Bayesians are MAP estimators.
+   The Bayesians are MAP estimators.
 
 ### TODO
    - **Visualization** of an experiment($\Delta B$---$t$ graph) and of

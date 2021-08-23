@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 
 # CLASSES
 
-class ContinuousBaumWelchFilter(Estimator):
+class ContinuousBaumWelchEstimator(Estimator):
     def __init__(self, sys, tau, B0, D, T):
         Estimator.__init__(self, sys)
         self.alpha = self.sys.alpha
@@ -32,6 +32,7 @@ class ContinuousBaumWelchFilter(Estimator):
 
         self.data.append({'meas_time': meas_time,
                           'result': self.sys.measure(meas_time)})
+
         if len(self.data) > 100:
             self.data.pop(0)
 

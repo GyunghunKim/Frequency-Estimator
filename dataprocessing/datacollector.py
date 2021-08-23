@@ -7,16 +7,17 @@ import matplotlib.pyplot as plt
 
 
 class DataCollector():
-    def __init__(self):
+    def __init__(self, name_list=[]):
         """
         :params N: number of estimators
         Notes
          * Data structure: {exp_num:int, exp_data:{time:float, ref:float,
              est:list(float)}}
         """
+        self.name_list = name_list
         self.data = []
 
-    def append(self, num_exp, time, ref, *est):
+    def append(self, num_exp, time, ref, est_list):
         """
         :params num_exp: Experiement number
         :params time: Current time
@@ -24,7 +25,7 @@ class DataCollector():
         :params *est: Estimations
         """
         self.data.append({'num_exp': num_exp, 'time': time,
-                         'ref': ref, 'est_list': est})
+                         'ref': ref, 'est_list': est_list})
 
     def mse(self, num_est):
         """
@@ -36,7 +37,7 @@ class DataCollector():
 
         return np.sqrt(res/len(self.data))
 
-    def visualize_exp(self, num_exp, *est):
+    def visualize_exp(self, num_exp, est):
         time = [item['time'] for item in self.data]
         ref = []
         B_list = []
@@ -46,7 +47,7 @@ class DataCollector():
             else:
                 B_list.append([item['est_list'][elem] for item in self.data])
 
-        plt.figure(dpi=100)
+        fig = plt.figure(dpi=100)
         plt.title('$\Delta B_{z}$')
         plt.xlabel('time [s]')
         plt.ylabel('$\Delta B_{z}$ [Hz]')
@@ -55,6 +56,11 @@ class DataCollector():
         if ref:
             plt.plot(time, ref, label='True')
         for i in range(len(B_list)):
-            plt.plot(time, B_list[i], label='$\Delta B_{}$'.format(i))
+            if not self.name_list:
+                plt.plot(time, B_list[i], label='$\Delta B_{}$'.format(i))
+            else:
+                plt.plot(time, B_list[i], label=self.name_list[i])
         plt.legend()
         plt.show()
+
+        return fig

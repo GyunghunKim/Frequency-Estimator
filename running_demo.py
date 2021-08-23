@@ -8,6 +8,14 @@ from tqdm import tqdm
 import numpy as np
 import multiprocessing
 
+# For multiprocessing
+
+def estimator_update(est: Estimator):
+    est.update()
+
+def estimator_estimate(est: Estimator):
+    return est.estimate()
+
 # MAIN
 
 if __name__ == "__main__":
@@ -34,28 +42,33 @@ if __name__ == "__main__":
     estimators = [BayesianEstimator(sys, M, tau, SD_B, B0),
                   BayesianSmoothEstimator(sys, M, tau, SD_B, B0),
                   #BayesianExpSamplingEstimator(sys, M, tau, SD_B, B0, sig),
-                  ContinuousBaumWelchFilter(sys, tau, B0, D, T),
+                  ContinuousBaumWelchEstimator(sys, tau, B0, D, T),
                   #MeanFilter(sys, M, B0)
                   ]
 
     # Data collector definition
-    dc = DataCollector()
+    name_list = [type(estimator).__name__ for estimator in estimators]
+    dc = DataCollector(name_list)
 
-    # Multiprocessing
     pool = multiprocessing.Pool()
 
-    for _ in tqdm(range(1000)):
+    for _ in tqdm(range(500)):
         # Update the system and estimator
         sys.update()
 
-        pool.map(lambda est: est.update(), estimators)
+        for estimator in estimators:
+            estimator.update()
 
-        dc.append(0, sys.time, sys.B,
-                  *[estimator.estimate() for estimator in estimators])
+        estimation = pool.map(estimator_estimate, estimators)
+        #estimation = [estimator.estimate() for estimator in estimators]
+
+        dc.append(0, sys.time, sys.B, estimation)
+
+    pool.close()
 
     # Print the results out
     for i, estimator in enumerate(estimators):
         print("MSE({}): {:.03f}MHz".format(
             type(estimator).__name__, dc.mse(i) / 1e6))
 
-    dc.visualize_exp(0, 'ref', *range(len(estimators)))
+    dc.visualize_exp(0, ['ref', *range(len(estimators))])
