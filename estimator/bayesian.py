@@ -5,8 +5,8 @@ import numpy as np
 import scipy.stats
 from scipy.optimize import minimize
 
-# CLASSES
 
+# CLASSES
 
 class BayesianEstimator(Estimator):
     def __init__(self, sys, M, tau, SD_B, B0):
@@ -36,7 +36,8 @@ class BayesianEstimator(Estimator):
             B_list_precision = 100
 
             B_list = np.linspace(initial_guess * B_list_upper_limit,
-                                 initial_guess * B_list_lower_limit, B_list_precision)
+                                 initial_guess * B_list_lower_limit,
+                                 B_list_precision)
             ans = B_list[np.argmax([func(B) for B in B_list])]
 
         if algorithm == 'scipy':

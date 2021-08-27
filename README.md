@@ -24,15 +24,29 @@
 
 ## Notes on Estimators
 
-1. The BaumWelch estimator is equivalent to finding the argmax $i$ on pdf
-   $P(X_t=i,Y_1,...,Y_t)$, where
-   $$P(X_t=i,Y_s)=\int P(Y_s \vert X_s)P(X_s \vert X_t)dX_s.$$
-   The filter is just a slightly advanced MLE, which is seem to be worse than a
-   MAP Bayesian estimator.
+### The BaumWelch estimator is equivalent to finding the argmax $i$ on pdf
+  
+$P(X_t=i,Y_1,...,Y_t)$, where $$P(X_t=i,Y_s)=\int P(Y_s \vert X_s)P(X_s \vert
+X_t)dX_s.$$ The filter is just a slightly advanced MLE, which is seem to be
+worse than a MAP Bayesian estimator.
 
-   ![Estimator](./Images/Estimators_result.png)
+The implementation is `BaumWelchEstimator`.
 
-   The Bayesians are MAP estimators.
+![Estimator](./Images/Estimators_result.png)
+
+The Bayesians are MAP estimators.
+
+### The stragegy described in [2]
+
+Bayesian analysis gives $P(f|D)$ for given measurements $D=\{(t_k, d_k)\}$ and
+under the assumption that $P(f|\mu,\sigma^2) \sim N(\mu, \sigma^2)$. 
+We estimate $f$ to be the mean of $P(f|d_n, t_n; \mu, \sigma^2)$ and choose the next $t$ to minimize
+the $\sigma$ of the pdf.
+We update $\mu$ and $\sigma$ after each measurement. A warming-up process is
+required to estimate proper $\mu$ to start with.
+
+The implementation is `OptBayesianEstimator`.
+
 
 ### TODO
    - **Visualization** of an experiment($\Delta B$---$t$ graph) and of
@@ -40,7 +54,6 @@
    - Particle filter
    - Extended Kalman filter
    - Exponential data sampling
-   - Implementation of the strategy in [2]
 
 # Finding the Lower Limit of Estimation
 

@@ -1,6 +1,7 @@
 # IMPORTS
 import numpy as np
 
+
 # CLASSES
 
 
@@ -24,6 +25,6 @@ class System:
     def measure(self, tau):
         prob = 0.5 * (1 - (self.alpha + self.beta * np.cos(2 * np.pi * self.B *
                                                            tau)))
-        result = np.random.choice([1, 0], p=[prob, 1-prob])
+        result = np.random.choice([1, 0], p=[prob, 1 - prob])
 
         return result
