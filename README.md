@@ -43,6 +43,10 @@ The Bayesians are MAP estimators by default.
 
 The implementation is `OptBayesianEstimator`.
 
+### The Ultimate Method
+
+
+
 # Reference
 
 [1] Shulman, M. D., Harvey, S. P., Nichol, J. M., Bartlett, S. D., Doherty, A.

@@ -37,7 +37,7 @@ if __name__ == "__main__":
     # Estimator parameters
     tau = 1e-9
     M = 100
-    SD_B = 100e6
+    SD_B = 50e6
     sig = 1.00693166885
     SD_B_between_steps = np.sqrt(2 * D * T)
 
@@ -47,8 +47,9 @@ if __name__ == "__main__":
         # BayesianSmoothEstimator(sys, M, tau, SD_B, B0),
         # BayesianExpSamplingEstimator(sys, M, tau, SD_B, B0, sig),
         # ContinuousBaumWelchEstimator(sys, 50, tau, B0, D, T, 1e6, time='linear'),
-        ContinuousBaumWelchEstimator(sys, 50, tau, B0, D, T, 1e6, time='exponential'),
-        # OptBayesianEstimator(sys, M, 1e6, B0),
+        # ContinuousBaumWelchEstimator(sys, 50, tau, B0, D, T, 1e6, time='exponential'),
+        # OptBayesianEstimator(sys, D, T, B0),
+        CombinedBayesianEstimator(sys, D, T, B0, M, tau, SD_B, 10e6),
         MeanFilter(sys, 50, B0)
     ]
 
@@ -56,7 +57,7 @@ if __name__ == "__main__":
     name_list = [type(estimator).__name__ for estimator in estimators]
     dc = DataCollector(name_list)
 
-    for _ in tqdm(range(1000)):
+    for _ in tqdm(range(10000)):
         # Update the system and estimator
         sys.update()
 
