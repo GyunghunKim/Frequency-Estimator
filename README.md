@@ -22,7 +22,7 @@
 
 ## Trials
 
-## The BaumWelch estimator 
+### The BaumWelch estimator 
 
 The estimator is equivalent to finding the argmax $i$ on pdf. It is just one of
 Bayesians.
@@ -37,7 +37,7 @@ The implementation is `BaumWelchEstimator`.
 
 The Bayesians are MAP estimators by default.
 
-## [2] and [4]
+### [2] and [4]
 
 [Jupyter Notebook](DeepBayesian.ipynb)
 

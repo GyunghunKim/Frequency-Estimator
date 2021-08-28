@@ -43,10 +43,10 @@ if __name__ == "__main__":
 
     # Estimator definition
 
-    estimators = [  BayesianEstimator(sys, M, tau, SD_B, B0),
+    estimators = [ # BayesianEstimator(sys, M, tau, SD_B, B0),
         # BayesianSmoothEstimator(sys, M, tau, SD_B, B0),
         # BayesianExpSamplingEstimator(sys, M, tau, SD_B, B0, sig),
-        ContinuousBaumWelchEstimator(sys, 50, tau, B0, D, T, 1e6, time='linear'),
+        # ContinuousBaumWelchEstimator(sys, 50, tau, B0, D, T, 1e6, time='linear'),
         ContinuousBaumWelchEstimator(sys, 50, tau, B0, D, T, 1e6, time='exponential'),
         # OptBayesianEstimator(sys, M, 1e6, B0),
         MeanFilter(sys, 50, B0)
