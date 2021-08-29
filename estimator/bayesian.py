@@ -80,7 +80,7 @@ class BayesianEstimator(Estimator):
                 elif d == 0:
                     res *= 0.5 * (1 + (alpha + beta * np.cos(2 * np.pi * B *
                                                              time)))
-            res *= scipy.stats.norm(self.previous_estimation, self.SD_B).pdf(B)
+            # res *= scipy.stats.norm(self.previous_estimation, self.SD_B).pdf(B)
 
             return res
 

@@ -43,21 +43,21 @@ if __name__ == "__main__":
 
     # Estimator definition
 
-    estimators = [ # BayesianEstimator(sys, M, tau, SD_B, B0),
+    estimators = [ BayesianEstimator(sys, M, tau, SD_B, B0),
         # BayesianSmoothEstimator(sys, M, tau, SD_B, B0),
         # BayesianExpSamplingEstimator(sys, M, tau, SD_B, B0, sig),
         # ContinuousBaumWelchEstimator(sys, 50, tau, B0, D, T, 1e6, time='linear'),
         # ContinuousBaumWelchEstimator(sys, 50, tau, B0, D, T, 1e6, time='exponential'),
         # OptBayesianEstimator(sys, D, T, B0),
-        CombinedBayesianEstimator(sys, D, T, B0, M, tau, SD_B, 10e6),
-        MeanFilter(sys, 50, B0)
+        # CombinedBayesianEstimator(sys, D, T, B0, M, tau, SD_B, 10e6),
+        # MeanFilter(sys, 50, B0)
     ]
 
     # Data collector definition
     name_list = [type(estimator).__name__ for estimator in estimators]
     dc = DataCollector(name_list)
 
-    for _ in tqdm(range(10000)):
+    for _ in tqdm(range(300000)):
         # Update the system and estimator
         sys.update()
 
